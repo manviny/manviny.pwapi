@@ -2,7 +2,7 @@
 
 
 
-class pwapi extends WireData implements Module {
+class Pwapi extends WireData implements Module {
 
 	/**
 	 * getModuleInfo is a module required by all modules to tell ProcessWire about them
@@ -94,6 +94,6 @@ class pwapi extends WireData implements Module {
 
 	}
 
-
+}
 
 
