@@ -77,11 +77,11 @@ class Pwapi extends WireData implements Module {
 		switch ($service) {
 
 		    // $http.post('http://ip/web-service/', {action: 'getPage', pageId: 1046 })
-		    case "prueba":									
-				$event->return = $this->prueba($d["prueba"]);
-		        break;	
+		    case "prueba": $event->return = $this->prueba($d["prueba"]); break;	
+		    
+		    // case "prueba": $event->return = $this->prueba($d["prueba"]); break;	
 
-	    	default: echo "el servicio no existe";
+	    	default: echo "el servicio no existe"; 
 		}
 
 
