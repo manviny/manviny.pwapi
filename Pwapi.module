@@ -91,7 +91,7 @@ class Pwapi extends WireData implements Module {
 		    
 		    // registerUser( $name, $email, $email2, $password, $password2 )    
 		    case "searchPages":									
-				$event->return =$this->searchPages( $d["selector"]);
+				$event->return =$this->searchPages( $d["query"]);
 		        break;	
 
 	    	default: echo "el servicio no existe"; 
@@ -211,16 +211,15 @@ class Pwapi extends WireData implements Module {
 	 * @param  [type] $selector 'parent=/agenda/, sort=-blog_fecha, limit=5, blog_fecha>='. time()
 	 * @return [type]           [description]
 	 */
-	protected function searchPages($selector) {
+	protected function searchPages($query) {
 
-		$selector = wire("sanitizer")->text($selector);
+		// $selector = wire("sanitizer")->text($selector);
 		try {
-			$paginas = wire('pages')->find($selector)->toJSON();
+			$paginas = wire('pages')->find($query)->toJSON();
 			// $this->session->redirect('http://google.es',false);
 		} catch (Exception $e) {
 			return ("Comprobar que los campos enviados y los de la BD son del mismo tipo INT, TEXT, DATE...");
 		}
-		
 		
 		return ($paginas);
 
