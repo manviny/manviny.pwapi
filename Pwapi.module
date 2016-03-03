@@ -88,6 +88,11 @@ class Pwapi extends WireData implements Module {
 		    case "registerUser":									
 				$event->return =$this->registerUser($d["name"], $d["email"], $d["email2"], $d["password"], $d["password2"]);
 		        break;	
+		    
+		    // registerUser( $name, $email, $email2, $password, $password2 )    
+		    case "searchPages":									
+				$event->return =$this->searchPages( $d["selector"]);
+		        break;	
 
 	    	default: echo "el servicio no existe"; 
 		}
@@ -105,15 +110,30 @@ class Pwapi extends WireData implements Module {
 
 	/**
 	 * NEEDS wireMail SMTP module to be installed and configured
+	 *
+	 *		sino se indica quien envia el email ($from), coje el usuario de la configuración de WireMailSmtp
+	 *
+	 *       $http.post( '/knamax/pwapi/', { do: 'sendEmail', data:{
+     *            'from': 'manol@indinet.es', 
+     *            'to': $scope.email, 
+     *            'subject': $scope.nombre, 
+     *            'message': $scope.message
+     *      }})
 	 */
 	protected function sendEmail( $from, $to, $subject, $message ){
-			$mail = wireMail();
-			$mail->to($to)->from($from); // all calls can be chained
-			$mail->subject($subject); 
-			// $mail->body($message);
-			$mail->bodyHTML($message); 
-			$mail->send(); 
-			return json_encode( ["from" => $from, "to" => $to, "subject" => $subject, "message" => $message,] );
+
+		// sino se indica quien envia el email, coje el usuario de la configuración de WireMailSmtp
+		if (!$from) {
+			$data = wire('modules')->getModuleConfigData('WireMailSmtp');
+			$from = $data["smtp_user"];
+		}
+		$mail = wireMail();
+		$mail->to($to)->from($from); // all calls can be chained
+		$mail->subject($subject); 
+		// $mail->body($message);
+		$mail->bodyHTML($message); 
+		$mail->send(); 
+		return json_encode( ["from" => $from, "to" => $to, "subject" => $subject, "message" => $message,] );
 	}
 
 	/**
@@ -176,6 +196,33 @@ class Pwapi extends WireData implements Module {
 		$u->save();
 
 		return json_encode( ["name" => $u->name, "password" => $u->pass, "message" => $message,] );
+
+	}
+
+	/**
+	 * Busca en paginas de PW 
+	 * 
+     *     selector = 'template=vehiculo, title|descripcion_corta*=hormigonera, marca=MAN, sort=-blog_fecha, limit=5';
+     *     PW.service('searchPages', {selector: selector})
+     *     .then(function(data){
+     *       console.debug("DATA",data); 
+     *     })   
+	 * 
+	 * @param  [type] $selector 'parent=/agenda/, sort=-blog_fecha, limit=5, blog_fecha>='. time()
+	 * @return [type]           [description]
+	 */
+	protected function searchPages($selector) {
+
+		$selector = wire("sanitizer")->text($selector);
+		try {
+			$paginas = wire('pages')->find($selector)->toJSON();
+			// $this->session->redirect('http://google.es',false);
+		} catch (Exception $e) {
+			return ("Comprobar que los campos enviados y los de la BD son del mismo tipo INT, TEXT, DATE...");
+		}
+		
+		
+		return ($paginas);
 
 	}
 

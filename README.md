@@ -1,7 +1,6 @@
-## Enviar email
+## Enviar email (OPCION 1),
 ```js
-$http.post( '/knamax/pwapi/', { do: 'sendEmail', data:{
-	'from': 'manol@indinet.es', 
+$http.post( '/tuweb/pwapi/', { do: 'sendEmail', data:{
 	'to': $scope.email, 
 	'subject': $scope.nombre, 
 	'message': $scope.message
@@ -10,14 +9,26 @@ $http.post( '/knamax/pwapi/', { do: 'sendEmail', data:{
 .error(function(data){ console.log("NO registrado", data) }); 
 ```
 
-## Registrar usuario
+## Enviar email (OPCION 2), si queremos indicar que lo envia alguien diferente.
 ```js
-$http.post( '/knamax/pwapi/', { do: 'registerUser', data:{
+$http.post( '/tuweb/pwapi/', { do: 'sendEmail', data:{
+	'from': 'nombre@correo.com', 
+	'to': $scope.email, 
+	'subject': $scope.nombre, 
+	'message': $scope.message
+}})
+.success( function (result) {  console.log("registrado", result); })
+.error(function(data){ console.log("NO registrado", data) }); 
+```
+
+## Registrar usuario 
+```js
+$http.post( '/tuweb/pwapi/', { do: 'registerUser', data:{
 	'name': 'manol2', 
-	'email': 'manol2@indinet.es', 
+	'email': 'usuario@correo.com', 
 	'email2': '', 
-	'password': 'kakita33L', 
-	'password2': 'kakita33L' 
+	'password': 'password', 
+	'password2': 'password' 
 }})
 .success( function (result) {  console.log("registrado", result); })
 .error(function(data){ console.log("NO registrado", data) }); 
