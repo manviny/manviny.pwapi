@@ -18,7 +18,7 @@ class Pwapi extends WireData implements Module {
 			'title' => 'PW api for angularjs', 
 
 			// version number 
-			'version' => 0.1, 
+			'version' => 0.2, 
 
 			// summary is brief description of what this module is
 			'summary' => 'a clean way to use angularjs + API to use PW in javascript',
