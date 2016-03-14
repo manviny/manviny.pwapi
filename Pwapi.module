@@ -86,7 +86,7 @@ class Pwapi extends WireData implements Module {
 
 		    // Envia al administrador un email desde el formulario de contacto
 		    case "getEmail":									
-				$event->return = $this->sendEmail( $d["from"], $d["subject"], $d["message"] );
+				$event->return = $this->getEmail( $d["from"], $d["subject"], $d["message"] );
 		        break;	
 		    
 		    // registerUser( $name, $email, $email2, $password, $password2 )    
@@ -132,18 +132,15 @@ class Pwapi extends WireData implements Module {
 		$data = wire('modules')->getModuleConfigData('WireMailSmtp');
 		$to = $data["smtp_user"];
 		
-		$mail = wireMail($to, $from, $subject, $message);
-
-
-		// $mail = wireMail();
-		// // $mail->to($to)->from($from); // all calls can be chained
-		// // $mail->to($from)->from($from); // all calls can be chained
-		// $mail->to($to); // all calls can be chained
-		// $mail->subject( $subject ); 
-		// // $mail->body($message);
-		// $mail->bodyHTML($message); 
-		// $mail->send(); 
-		return $mail ;
+		$mail = wireMail();
+		// $mail->to($to)->from($from); // all calls can be chained
+		$mail->from($from); // all calls can be chained
+		$mail->to($to); // all calls can be chained
+		$mail->subject( $subject ); 
+		// $mail->body($message);
+		$mail->bodyHTML($from. "<h1>Te ha enviado:</h1> ".$message); 
+		$mail->send(); 
+		return true;
 	}
 
 
