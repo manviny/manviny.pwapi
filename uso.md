@@ -29,7 +29,7 @@ Este debe contener:
 </div>
 <!-- CONTACTO. -->
 ```
-### Para enviar el email debemos escribir un javascript adapatado a tu web parecido a este: 
+### Para enviar el email debemos escribir un javascript adaptado a tu web parecido a este: 
 Con esto conseguimos enviar el email
 ```js
 app.controller('footerCtrl', function ($scope, $http) {
@@ -74,7 +74,7 @@ app.controller('footerCtrl', function ($scope, $http) {
 ```
 
 ## 3.- Avisar por pantalla que el formulario se ha recibido correctamente
-
+Para conseguir esto debemos instalar un [nuevo módulo](https://github.com/CodeSeven/toastr)
 ```js
 // 1.- Para instalar avisos flotantes, en este caso toastr
 // 2.- Cargar el css y js necesarios
@@ -85,8 +85,32 @@ app.controller('footerCtrl', function ($scope, $http) {
 // 3.- buscar esta linea de código "var app=angular.module", generalmente estará en el _init.php y añadir
 var app=angular.module('myApp',['ngRoute','toastr'])
 
+// 4.- ahora podemos usar el módulo
+
+app.controller('footerCtrl', function ($scope, $http, toastr) {
+
+    $scope.enviarEmail = function(){
+        $http.post( '/tuweb/pwapi/', { do: 'getEmail', data:{
+            'from': $scope.email, 
+            'subject': $scope.subject, 
+            'message': $scope.message
+        }})
+        .success( function (result) {  
+            console.log("email enviado", result); 
+            $scope.email = '';
+            $scope.subject = '';
+            $scope.message = '';
+            toastr.info( 'Hemos recibido tu mensaje.'  ,{timeOut:3000});
+        })
+        .error(function(data){ 
+        toastr.info( 'Ha habido un error enviando el mensaje, inténtalo de nuevo.'  ,{timeOut:3000});
+        });             
+    }
 
 
+});
 
-````
+```
+
+
 
