@@ -79,10 +79,11 @@ Para conseguir esto debemos instalar un [nuevo módulo](https://github.com/CodeS
 // 1.- Para instalar avisos flotantes, en este caso toastr
 // 2.- Cargar el css y js necesarios
 
-<script src="https://npmcdn.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
+<link rel="stylesheet" href="https://npmcdn.com/angular-toastr/dist/angular-toastr.css" />
 
 // IMPORTANTE LA SIGUIENTE LINEA DEBE CARGARSE DESPUES DE ANGULAR.MIN.JS
-<link rel="stylesheet" href="https://npmcdn.com/angular-toastr/dist/angular-toastr.css" />
+<script src="https://npmcdn.com/angular-toastr/dist/angular-toastr.tpls.js"></script>
+
 
 // 3.- buscar esta linea de código "var app=angular.module", generalmente estará en el _init.php y añadir
 var app=angular.module('myApp',['ngRoute','toastr'])
