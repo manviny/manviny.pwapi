@@ -132,14 +132,18 @@ class Pwapi extends WireData implements Module {
 		$data = wire('modules')->getModuleConfigData('WireMailSmtp');
 		$to = $data["smtp_user"];
 		
-		$mail = wireMail();
-		// $mail->to($to)->from($from); // all calls can be chained
-		$mail->to($from)->from($from); // all calls can be chained
-		$mail->subject( $subject ); 
-		// $mail->body($message);
-		$mail->bodyHTML($message); 
-		$mail->send(); 
-		return true;
+		$mail = wireMail($to, $from, $subject, $message);
+
+
+		// $mail = wireMail();
+		// // $mail->to($to)->from($from); // all calls can be chained
+		// // $mail->to($from)->from($from); // all calls can be chained
+		// $mail->to($to); // all calls can be chained
+		// $mail->subject( $subject ); 
+		// // $mail->body($message);
+		// $mail->bodyHTML($message); 
+		// $mail->send(); 
+		return $mail ;
 	}
 
 
