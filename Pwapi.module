@@ -1,4 +1,4 @@
-<?php
+]<?php
 
 
 
@@ -83,6 +83,11 @@ class Pwapi extends WireData implements Module {
 		    case "sendEmail":									
 				$event->return = $this->sendEmail( $d["from"], $d["to"], $d["subject"], $d["message"] );
 		        break;	
+
+		    // Envia al administrador un email desde el formulario de contacto
+		    case "getEmail":									
+				$event->return = $this->sendEmail( $d["from"], $d["subject"], $d["message"] );
+		        break;	
 		    
 		    // registerUser( $name, $email, $email2, $password, $password2 )    
 		    case "registerUser":									
@@ -105,6 +110,36 @@ class Pwapi extends WireData implements Module {
 
 		return $prueba. $prueba2;
 
+	}
+
+
+	/**
+	 * NEEDS wireMail SMTP module to be installed and configured
+	 *
+	 *		sino se indica quien envia el email ($from), coje el usuario de la configuración de WireMailSmtp
+	 *
+	 *       $http.post( '/knamax/pwapi/', { do: 'sendEmail', data:{
+     *            'from': 'manol@indinet.es', 
+     *            'to': $scope.email, 
+     *            'subject': $scope.nombre, 
+     *            'message': $scope.message
+     *      }})
+	 */
+	protected function getEmail( $from, $subject, $message ){
+
+		// sino se indica quien envia el email, coje el usuario de la configuración de WireMailSmtp
+		
+		$data = wire('modules')->getModuleConfigData('WireMailSmtp');
+		$to = $data["smtp_user"];
+		
+		$mail = wireMail();
+		// $mail->to($to)->from($from); // all calls can be chained
+		$mail->to($from)->from($from); // all calls can be chained
+		$mail->subject( $subject ); 
+		// $mail->body($message);
+		$mail->bodyHTML($message); 
+		$mail->send(); 
+		return true;
 	}
 
 
