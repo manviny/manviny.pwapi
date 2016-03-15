@@ -18,7 +18,7 @@ class Pwapi extends WireData implements Module {
 			'title' => 'PW api for angularjs', 
 
 			// version number 
-			'version' => 0.2, 
+			'version' => 0.21, 
 
 			// summary is brief description of what this module is
 			'summary' => 'servicios de PW para usar desde javascript',
@@ -164,9 +164,9 @@ class Pwapi extends WireData implements Module {
 			$from = $data["smtp_user"];
 		}
 		$mail = wireMail();
-		// $mail->to($to)->from($from); // all calls can be chained
-		$mail->to($from)->from($from); // all calls can be chained
-		$mail->subject(  $to."te ha enviado este email: ".$subject); 
+		$mail->to($from); // all calls can be chained
+		$mail->from($to); // all calls can be chained
+		$mail->subject($subject); 
 		// $mail->body($message);
 		$mail->bodyHTML($message); 
 		$mail->send(); 
